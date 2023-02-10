@@ -1,0 +1,36 @@
+import telebot
+from telebot import types 
+bot= telebot.TeleBot("6056240164:AAGdfUAcSqa4ReTAWsvvS4-HKUuOvgLGP7I")
+bot = telebot.TeleBot(TOKEN)
+
+@bot.message_handler(commands=['start'])
+def game_start(message):
+	keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
+	btn1 = types.KeyboardButton('Камінь')
+	btn2 = types.KeyboardButton('Ножиці')
+	btn3 = types.KeyboardButton('Папір')
+	keyboard.add(btn1, btn2, btn3)
+	bot.send_message(message.chat.id, 'Привіт! Це гра Камінь, Ножиці, Папір. Зроби свій хід:', reply_markup=keyboard)
+@bot.message_handler(content_types=['text'])
+def game(message):
+	choice = random.choice(['Камінь', 'Ножиці', 'Папір'])
+	if message.text == choice:
+		bot.send_message(message.chat.id, 'Нічия')
+	else:
+		if message.text == 'Камінь':
+			if choice == 'Ножиці':
+				bot.send_message(message.chat.id, 'Ти виграв! В мене був {}'.format(choice))
+			else:
+				bot.send_message(message.chat.id, 'Ти програв! В мене був {}'.format(choice))
+		elif message.text == 'Ножиці':
+			if choice == 'Папір':
+				bot.send_message(message.chat.id, 'Ти виграв! В мене був {}'.format(choice))
+			else:
+				bot.send_message(message.chat.id, 'Ти програв! В мене був {}'.format(choice))
+		elif message.text == 'Папір':
+			if choice == 'Камінь':
+				bot.send_message(message.chat.id, 'Ти виграв! В мене був {}'.format(choice))
+			else:
+				bot.send_message(message.chat.id, 'Ти програв! В мене був {}'.format(choice))
+						
+bot.polling(none_stop=True)
